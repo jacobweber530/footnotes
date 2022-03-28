@@ -1,0 +1,62 @@
+import requests
+from googlesearch import search
+from bs4 import BeautifulSoup
+content1term=""
+content2term=""
+content3term=""
+content4term=""
+variable=input("Whose footprints do you want to see?:")
+url = variable
+page = requests.get(url)
+html = page.text
+#print(html)
+soup = BeautifulSoup(html, "html.parser")
+# content searches work on substack
+content = soup.findAll("div",{"class": "account-hover-wrapper"})
+# contenttwo searches work on Wired
+contenttwo = soup.findAll("a", {"class": "BaseWrap-sc-TURhJ BaseText-fFzBQt BaseLink-gZQqBA BylineLink-eZnyPI eTiIvU mEZDb fNdcwQ bKZMMS byline__name-link button"})
+#contentthree searches work on the Atlantic
+contentthree= soup.findAll("a", {"class":"ArticleBylines_link__IlZu4"})
+#contentfour works for Washington Post
+contentfour= soup.findAll("a", {"class":"gray-darkest b bb bc-gray bt-hover"})
+print("finding footprints for")
+for text in content:
+  # if text == "entry-content", "" need some sort of filter here to ignore comment sections and other unwanted text in p elements
+  print(text.get_text())
+  content1term=text.get_text()
+for text in contenttwo:
+  print(text.get_text())
+  content2term=text.get_text()
+#print(content)
+for text in contentthree:
+  print(text.get_text())
+  content3term=text.get_text()
+for text in contentfour:
+  print(text.get_text())
+  content4term=text.get_text()
+
+print("Here are the footprints!")
+if content1term is not None:
+  for i in search(content1term, tld="com", num=5, stop=10, pause=2):
+    print(i)
+    
+if content2term is not None:
+  for i in search(content2term, tld="com", num=5, stop=10, pause=2):
+   print(i)
+
+if content3term is not None:
+  for i in search(content3term, tld="com", num=5, stop=10, pause=2):
+   print(i)
+
+if content4term is not None:
+  for i in search(content4term, tld="com", num=5, stop=10, pause=2):
+   print(i)
+#beginning to experiment with pulling other work by the author found via URL https://stackoverflow.com/questions/8616928/python-getting-all-links-from-a-div-having-a-class
+#links = '''<a href="url">next</a>
+#<span class="class"><a href="another_url">later</a></span>'''
+#otherArticles = soup.findAll("a", {"class": "post-preview-title-newsletter"})
+#for a in otherArticles:
+    #print ("Found the URL:", a['href'])
+#the code above works to find ALL urls in the pasted URL, but I need to just pull the other articles by the same author
+#for a in soup.find_all('a', href=True):
+    #print "Found the URL:", a['href']
